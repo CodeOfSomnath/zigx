@@ -30,6 +30,18 @@ pub fn getStdOut() File {
     return .{ .handle = getStdOutHandle() };
 }
 
+// This is an experimental function for the stdout making easier.
+// author: Somnath
+pub fn print(comptime format: []const u8, args: anytype) !void {
+    const stdout = getStdOut().writer();
+    try stdout.print(format, args);
+}
+
+test "print_function" {
+    try print("Hello {}\n", .{"Somnath"});
+    try print("it is working\n");
+}
+
 fn getStdErrHandle() posix.fd_t {
     if (is_windows) {
         return windows.peb().ProcessParameters.hStdError;
